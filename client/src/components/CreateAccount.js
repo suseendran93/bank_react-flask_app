@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Button, Row, Col, FormGroup, Form } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+
 const CreateAccount = () => {
-  const axios = require("axios");
+  let history = useNavigate();
+
   const [toggleForm, setToggleForm] = useState(false);
   const [name, setName] = useState("");
   const [acc, setAcc] = useState("");
-  const [beneficiary, setBeneficiary] = useState();
   const formToggle = () => {
     setToggleForm(true);
   };
@@ -28,23 +30,15 @@ const CreateAccount = () => {
     };
     fetch("/createaccount", requestOptions).then(() => {
       setToggleForm(false);
+      history("/");
     });
   };
 
-  const showBeneficiary = () => {
-    axios
-      .get("/showbeneficiary/" + 32323)
-      .then((res) => {
-        let obj = res && res.data[0].Beneficiary;
-        let array = Object.entries(obj);
-        setBeneficiary(array);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   return (
-    <div className="d-flex justify-content-center mt-5">
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ marginTop: "10%" }}
+    >
       <Row style={{ textAlign: "center" }}>
         <Col xs="12">
           <Button
@@ -89,39 +83,6 @@ const CreateAccount = () => {
                 </div>
               </FormGroup>
             </Form>
-          </Col>
-        )}
-        <Col xs="12">
-          <Button
-            className="mt-2 btn-size"
-            color="primary"
-            onClick={showBeneficiary}
-          >
-            Show beneficiary
-          </Button>
-        </Col>
-        {beneficiary && (
-          <Col xs="12">
-            <div className="d-flex justify-content-center mt-2">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Acc number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {beneficiary.map((val, key) => {
-                    return (
-                      <tr key={key}>
-                        <td>{val[0]}</td>
-                        <td>{val[1]}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
           </Col>
         )}
       </Row>
