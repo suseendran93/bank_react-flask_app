@@ -10,6 +10,7 @@ import {
   Form,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const UserDetails = ({ userDetails }) => {
   let history = useNavigate();
@@ -19,12 +20,22 @@ const UserDetails = ({ userDetails }) => {
   const [name, setName] = useState("");
   const [acc, setAcc] = useState("");
   const [modal, setModal] = useState(false);
+  const { signout } = useAuth();
   const toggle = () => setModal(!modal);
-
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
 
+  const handleLogout = (event) => {
+    event.preventDefault();
+    signout()
+      .then(() => {
+        history("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const handleAccChange = (event) => {
     setAcc(event.target.value);
   };
@@ -93,7 +104,7 @@ const UserDetails = ({ userDetails }) => {
         <Button
           className="mt-2 btn-size"
           color="secondary"
-          onClick={() => history("/")}
+          onClick={handleLogout}
         >
           Logout
         </Button>

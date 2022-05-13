@@ -1,37 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Row, Col, FormGroup, Form } from "reactstrap";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const CreateAccount = () => {
   let history = useNavigate();
 
   const [toggleForm, setToggleForm] = useState(false);
-  const [name, setName] = useState("");
-  const [acc, setAcc] = useState("");
+  // const [name, setName] = useState("");
+  // const [acc, setAcc] = useState("");
+  const accInput = useRef(null);
+  const nameInput = useRef(null);
+  const emailInput = useRef(null);
+  const passwordInput = useRef(null);
+  const { signup } = useAuth();
   const formToggle = () => {
     setToggleForm(true);
   };
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
+  // const handleNameChange = (event) => {
+  //   setName(event.target.value);
+  // };
 
-  const handleAccChange = (event) => {
-    setAcc(event.target.value);
-  };
+  // const handleAccChange = (event) => {
+  //   setAcc(event.target.value);
+  // };
   const accountCreation = (event) => {
     event.preventDefault();
-    let acco = parseInt(acc);
 
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ acc: acco, name: name }),
-    };
-    fetch("/createaccount", requestOptions).then(() => {
-      setToggleForm(false);
-      history("/");
-    });
+    let acco = parseInt(accInput.current.value);
+    signup(emailInput.current.value, passwordInput.current.value)
+      .then(() => {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            acc: acco,
+            name: nameInput.current.value,
+          }),
+        };
+        fetch("/createaccount", requestOptions).then(() => {
+          setToggleForm(false);
+          history("/");
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -40,7 +55,7 @@ const CreateAccount = () => {
       style={{ marginTop: "10%" }}
     >
       <Row style={{ textAlign: "center" }}>
-        <Col xs="12">
+        <Col xs="4">
           <Button
             className="mt-2 btn-size"
             color="primary"
@@ -55,13 +70,44 @@ const CreateAccount = () => {
               <FormGroup>
                 <Row className="m-3">
                   <Col xs="12" lg="4">
+                    <label>Email address</label>
+                  </Col>
+                  <Col xs="12" lg="8">
+                    <input
+                      type="email"
+                      // value={name}
+                      ref={emailInput}
+                      // onChange={handleNameChange}
+                    />
+                  </Col>
+                </Row>
+              </FormGroup>
+              <FormGroup>
+                <Row className="m-3">
+                  <Col xs="12" lg="4">
+                    <label>Password</label>
+                  </Col>
+                  <Col xs="12" lg="8">
+                    <input
+                      type="password"
+                      // value={name}
+                      ref={passwordInput}
+                      // onChange={handleNameChange}
+                    />
+                  </Col>
+                </Row>
+              </FormGroup>
+              <FormGroup>
+                <Row className="m-3">
+                  <Col xs="12" lg="4">
                     <label>Name</label>
                   </Col>
                   <Col xs="12" lg="8">
                     <input
                       type="text"
-                      value={name}
-                      onChange={handleNameChange}
+                      // value={name}
+                      ref={nameInput}
+                      // onChange={handleNameChange}
                     />
                   </Col>
                 </Row>
@@ -73,7 +119,12 @@ const CreateAccount = () => {
                   </Col>
 
                   <Col xs="12" lg="8">
-                    <input type="text" value={acc} onChange={handleAccChange} />
+                    <input
+                      type="text"
+                      // value={acc}
+                      ref={accInput}
+                      // onChange={handleAccChange}
+                    />
                   </Col>
                 </Row>
               </FormGroup>
