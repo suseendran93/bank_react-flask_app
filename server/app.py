@@ -1,8 +1,8 @@
+import os
 from flask import Flask, request, jsonify
 import connectmongo
 from bson.json_util import dumps
 mongoDb = connectmongo
-
 app = Flask(__name__)
 
 
@@ -56,4 +56,4 @@ def transferfund():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
