@@ -11,8 +11,8 @@ def postData(post):
     __collection.insert_one(post)
 
 
-def getData(accNumber):
-    return __collection.find({"Acc": accNumber})
+def getData(id):
+    return __collection.find({"_id": id})
 
 
 def update(acc, data, value):

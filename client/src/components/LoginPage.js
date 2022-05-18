@@ -13,18 +13,16 @@ const LoginPage = () => {
   const [userDetails, setUserDetails] = useState({});
   const [toaster, setToaster] = useState(false);
   const { signin } = useAuth();
-  const accInput = useRef(null);
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
 
   const submitLogin = (event) => {
     event.preventDefault();
-    let acco = parseInt(accInput.current.value);
 
     signin(emailInput.current.value, passwordInput.current.value)
-      .then(() => {
+      .then((res) => {
         axios
-          .get("/login/" + acco)
+          .get("/login/" + res.user.multiFactor.user.uid)
           .then((res) => {
             let obj = res && res.data[0];
             if (res.status === 200 && res.data.length !== 0) {
@@ -74,23 +72,13 @@ const LoginPage = () => {
 
                     <Col xs="12" lg="8">
                       <input type="password" ref={passwordInput} />
-                    </Col>
-                  </Row>
-                </FormGroup>
-                <FormGroup>
-                  <Row className="m-3">
-                    <Col xs="12" lg="4">
-                      <label>Acc No</label>
-                    </Col>
-
-                    <Col xs="12" lg="8">
-                      <input type="text" ref={accInput} />
                       {toaster && (
                         <p style={{ color: "red" }}>User not found!</p>
                       )}
                     </Col>
                   </Row>
                 </FormGroup>
+
                 <FormGroup>
                   <div className="d-flex justify-content-center align-items-center">
                     <Button type="submit">Submit</Button>

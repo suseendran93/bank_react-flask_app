@@ -7,9 +7,7 @@ const CreateAccount = () => {
   let history = useNavigate();
 
   const [toggleForm, setToggleForm] = useState(false);
-  // const [name, setName] = useState("");
-  // const [acc, setAcc] = useState("");
-  const accInput = useRef(null);
+
   const nameInput = useRef(null);
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
@@ -18,31 +16,28 @@ const CreateAccount = () => {
     setToggleForm(true);
   };
 
-  // const handleNameChange = (event) => {
-  //   setName(event.target.value);
-  // };
-
-  // const handleAccChange = (event) => {
-  //   setAcc(event.target.value);
-  // };
   const accountCreation = (event) => {
     event.preventDefault();
 
-    let acco = parseInt(accInput.current.value);
     signup(emailInput.current.value, passwordInput.current.value)
-      .then(() => {
+      .then((res) => {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            acc: acco,
+            id: res.user.multiFactor.user.uid,
+            acc: Math.floor(100000 + Math.random() * 900000),
             name: nameInput.current.value,
           }),
         };
-        fetch("/createaccount", requestOptions).then(() => {
-          setToggleForm(false);
-          history("/");
-        });
+        fetch("/createaccount", requestOptions)
+          .then((res) => {
+            setToggleForm(false);
+            history("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -73,12 +68,7 @@ const CreateAccount = () => {
                     <label>Email address</label>
                   </Col>
                   <Col xs="12" lg="8">
-                    <input
-                      type="email"
-                      // value={name}
-                      ref={emailInput}
-                      // onChange={handleNameChange}
-                    />
+                    <input type="email" ref={emailInput} />
                   </Col>
                 </Row>
               </FormGroup>
@@ -88,12 +78,7 @@ const CreateAccount = () => {
                     <label>Password</label>
                   </Col>
                   <Col xs="12" lg="8">
-                    <input
-                      type="password"
-                      // value={name}
-                      ref={passwordInput}
-                      // onChange={handleNameChange}
-                    />
+                    <input type="password" ref={passwordInput} />
                   </Col>
                 </Row>
               </FormGroup>
@@ -103,28 +88,7 @@ const CreateAccount = () => {
                     <label>Name</label>
                   </Col>
                   <Col xs="12" lg="8">
-                    <input
-                      type="text"
-                      // value={name}
-                      ref={nameInput}
-                      // onChange={handleNameChange}
-                    />
-                  </Col>
-                </Row>
-              </FormGroup>
-              <FormGroup>
-                <Row className="m-3">
-                  <Col xs="12" lg="4">
-                    <label>Account number</label>
-                  </Col>
-
-                  <Col xs="12" lg="8">
-                    <input
-                      type="text"
-                      // value={acc}
-                      ref={accInput}
-                      // onChange={handleAccChange}
-                    />
+                    <input type="text" ref={nameInput} />
                   </Col>
                 </Row>
               </FormGroup>
