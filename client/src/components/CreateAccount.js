@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Button, Row, Col, FormGroup, Form } from "reactstrap";
+import { Button, Row, Col, FormGroup, Form, Container } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -45,12 +45,12 @@ const CreateAccount = () => {
   };
 
   return (
-    <div
-      className="d-flex justify-content-center align-items-center"
-      style={{ marginTop: "10%" }}
-    >
-      <Row style={{ textAlign: "center" }}>
-        <Col xs="4">
+    <Container>
+      <Row
+        className="justify-content-center align-items-center"
+        style={{ textAlign: "center", marginTop: "10%" }}
+      >
+        <Col xs="12">
           <Button
             className="mt-2 btn-size"
             color="primary"
@@ -60,7 +60,7 @@ const CreateAccount = () => {
           </Button>
         </Col>
         {toggleForm && (
-          <Col xs="12" className="mt-2">
+          <Col xs="6" className="mt-2">
             <Form onSubmit={accountCreation}>
               <FormGroup>
                 <Row className="m-3">
@@ -100,15 +100,15 @@ const CreateAccount = () => {
             </Form>
           </Col>
         )}
-      </Row>
-      {/*data && data.members && typeof data.members === "undefined" ? (
+        {/*data && data.members && typeof data.members === "undefined" ? (
         <p>Loading...</p>
       ) : (
         data &&
         data.members &&
         data.members.map((item, id) => <p key={id}>{item}</p>)
       )*/}
-    </div>
+      </Row>
+    </Container>
   );
 };
 

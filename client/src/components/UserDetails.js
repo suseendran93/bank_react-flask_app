@@ -99,7 +99,7 @@ const UserDetails = ({ userDetails }) => {
   };
 
   return (
-    <div>
+    <>
       <div className="m-2" style={{ textAlign: "right" }}>
         <Button
           className="mt-2 btn-size"
@@ -170,47 +170,42 @@ const UserDetails = ({ userDetails }) => {
           </div>
         )}
       </div>
-      <>
-        <Modal isOpen={modal} toggle={toggle}>
-          <ModalHeader className="justify-content-center">
-            Enter Beneficiary details
-          </ModalHeader>
-          <ModalBody>
-            <Form onSubmit={addBeneficiary}>
-              <FormGroup>
-                <Row className="m-3">
-                  <Col xs="4" lg="4">
-                    <label>Name</label>
-                  </Col>
 
-                  <Col xs="8" lg="8">
-                    <input
-                      type="text"
-                      value={name}
-                      onChange={handleNameChange}
-                    />
-                  </Col>
-                </Row>
-                <Row className="m-3">
-                  <Col xs="4" lg="4">
-                    <label>Account number</label>
-                  </Col>
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader className="justify-content-center">
+          Enter Beneficiary details
+        </ModalHeader>
+        <ModalBody>
+          <Form onSubmit={addBeneficiary}>
+            <FormGroup>
+              <Row className="m-3">
+                <Col xs="4" lg="4">
+                  <label>Name</label>
+                </Col>
 
-                  <Col xs="8" lg="8">
-                    <input type="text" value={acc} onChange={handleAccChange} />
-                  </Col>
-                </Row>
-              </FormGroup>
-              <FormGroup>
-                <div className="d-flex justify-content-center align-items-center">
-                  <Button type="submit">Submit</Button>
-                </div>
-              </FormGroup>
-            </Form>
-          </ModalBody>
-        </Modal>
-      </>
-    </div>
+                <Col xs="8" lg="8">
+                  <input type="text" value={name} onChange={handleNameChange} />
+                </Col>
+              </Row>
+              <Row className="m-3">
+                <Col xs="4" lg="4">
+                  <label>Account number</label>
+                </Col>
+
+                <Col xs="8" lg="8">
+                  <input type="text" value={acc} onChange={handleAccChange} />
+                </Col>
+              </Row>
+            </FormGroup>
+            <FormGroup>
+              <div className="d-flex justify-content-center align-items-center">
+                <Button type="submit">Submit</Button>
+              </div>
+            </FormGroup>
+          </Form>
+        </ModalBody>
+      </Modal>
+    </>
   );
 };
 

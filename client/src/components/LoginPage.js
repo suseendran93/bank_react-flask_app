@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Button, Row, Col, FormGroup, Form } from "reactstrap";
+import { Button, Row, Col, FormGroup, Form, Container } from "reactstrap";
 import UserDetails from "./UserDetails";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -12,12 +12,14 @@ const LoginPage = () => {
   const [userPage, setUserPage] = useState(false);
   const [userDetails, setUserDetails] = useState({});
   const [toaster, setToaster] = useState(false);
+  const [loader, setLoader] = useState(false);
   const { signin } = useAuth();
   const emailInput = useRef(null);
   const passwordInput = useRef(null);
 
   const submitLogin = (event) => {
     event.preventDefault();
+    setLoader(true);
 
     signin(emailInput.current.value, passwordInput.current.value)
       .then((res) => {
@@ -28,30 +30,30 @@ const LoginPage = () => {
             if (res.status === 200 && res.data.length !== 0) {
               setUserPage(true);
               setUserDetails(obj);
+              setLoader(false);
+
               // history("user-details");
             } else {
               setUserPage(false);
               setToaster(true);
             }
           })
-          .catch((err) => {
-            console.log(err);
-          });
+          .catch((err) => {});
       })
       .catch((err) => {
-        console.log(err);
+        setToaster(true);
       });
   };
 
   return (
     <>
       {!userPage ? (
-        <div
-          className="d-flex justify-content-center align-items-center"
-          style={{ marginTop: "10%" }}
-        >
-          <Row style={{ textAlign: "center" }}>
-            <Col xs="12" className="mt-2">
+        <Container>
+          <Row
+            className="d-flex justify-content-center align-items-center"
+            style={{ textAlign: "center", marginTop: "10%" }}
+          >
+            <Col xs="6" className="mt-2">
               <Form onSubmit={submitLogin}>
                 <FormGroup>
                   <Row className="m-3">
@@ -81,15 +83,19 @@ const LoginPage = () => {
 
                 <FormGroup>
                   <div className="d-flex justify-content-center align-items-center">
-                    <Button type="submit">Submit</Button>
+                    {!loader ? (
+                      <Button type="submit">Submit</Button>
+                    ) : (
+                      <Button disabled={true}>Loading...</Button>
+                    )}
                   </div>
                 </FormGroup>
               </Form>
             </Col>
           </Row>
-        </div>
+        </Container>
       ) : (
-        <Col>{<UserDetails userDetails={userDetails} />}</Col>
+        <UserDetails userDetails={userDetails} />
       )}
     </>
   );
