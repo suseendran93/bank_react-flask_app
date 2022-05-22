@@ -87,7 +87,7 @@ const UserDetails = ({ userDetails }) => {
 
     event.preventDefault();
     axios
-      .get("/showbeneficiary/" + userDetails.Acc)
+      .get("/showbeneficiary/" + userDetails._id)
       .then((res) => {
         let obj = res && res.data[0].Beneficiary;
         let array = Object.entries(obj);

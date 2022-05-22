@@ -31,10 +31,10 @@ def createAccount():
     return jsonify(response_value=request.json)
 
 
-@app.route('/showbeneficiary/<accNumber>', methods=["GET"])
+@app.route('/showbeneficiary/<id>', methods=["GET"])
 # @cross_origin()
-def showBeneficiary(accNumber):
-    cursor = mongoDb.getData(int(accNumber))
+def showBeneficiary(id):
+    cursor = mongoDb.getData(id)
     json_data = dumps(cursor, indent=2)
     return json_data
 
