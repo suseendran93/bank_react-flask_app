@@ -60,7 +60,7 @@ const CreateAccount = () => {
           </Button>
         </Col>
         {toggleForm && (
-          <Col xs="6" className="mt-2">
+          <Col md="6" className="mt-2">
             <Form onSubmit={accountCreation}>
               <FormGroup>
                 <Row className="m-3">

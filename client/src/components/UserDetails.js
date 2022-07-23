@@ -53,7 +53,7 @@ const UserDetails = ({ userDetails }) => {
     };
     fetch("/transferfund", requestOptions).then(() => {
       axios
-        .get("/login/" + userDetails.Acc)
+        .get("/login/" + userDetails._id)
         .then((res) => {
           let obj = res && res.data[0];
           userDetails.Balance = obj.Balance;

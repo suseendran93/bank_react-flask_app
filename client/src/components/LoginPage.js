@@ -11,7 +11,7 @@ const LoginPage = () => {
   const axios = require("axios");
   const [userPage, setUserPage] = useState(false);
   const [userDetails, setUserDetails] = useState({});
-  const [toaster, setToaster] = useState(false);
+  const [toaster, setToaster] = useState({ flag: false, message: "" });
   const [loader, setLoader] = useState(false);
   const { signin } = useAuth();
   const emailInput = useRef(null);
@@ -33,15 +33,24 @@ const LoginPage = () => {
               setLoader(false);
 
               // history("user-details");
-            } else {
-              setUserPage(false);
-              setToaster(true);
             }
           })
-          .catch((err) => {});
+          .catch((err) => {
+            setLoader(false);
+            setToaster({ flag: true, message: "Network error!" });
+          });
       })
       .catch((err) => {
-        setToaster(true);
+        let message = "Error occurred";
+        if (JSON.parse(JSON.stringify(err)).code === "auth/wrong-password") {
+          message = "Wrong password!";
+        } else if (
+          JSON.parse(JSON.stringify(err)).code === "auth/user-not-found"
+        ) {
+          message = "Email not found";
+        }
+        setLoader(false);
+        setToaster({ flag: true, message: message });
       });
   };
 
@@ -53,7 +62,7 @@ const LoginPage = () => {
             className="d-flex justify-content-center align-items-center"
             style={{ textAlign: "center", marginTop: "10%" }}
           >
-            <Col xs="6" className="mt-2">
+            <Col md="6" className="mt-2">
               <Form onSubmit={submitLogin}>
                 <FormGroup>
                   <Row className="m-3">
@@ -74,8 +83,8 @@ const LoginPage = () => {
 
                     <Col xs="12" lg="8">
                       <input type="password" ref={passwordInput} />
-                      {toaster && (
-                        <p style={{ color: "red" }}>User not found!</p>
+                      {toaster.flag && (
+                        <p style={{ color: "red" }}>{toaster.message}</p>
                       )}
                     </Col>
                   </Row>
