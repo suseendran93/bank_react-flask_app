@@ -8,15 +8,17 @@ import { AuthProvider } from "../contexts/AuthContext";
 
 const App = () => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<Homepage />} />
-          <Route exact path="/login" element={<LoginPage />} />
-          <Route exact path="/create-account" element={<CreateAccount />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <div>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route exact path="/" element={<Homepage />} />
+            <Route exact path="/login" element={<LoginPage />} />
+            <Route exact path="/create-account" element={<CreateAccount />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </div>
   );
 };
 

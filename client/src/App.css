@@ -1,3 +1,7 @@
+*{
+  box-sizing: border-box;
+}
+
 .App {
   text-align: center;
 }
@@ -70,3 +74,14 @@ tbody {
   border: 1px solid #8db4db;
   background-color: #8db4db;
 }
+
+
+.home-container{
+  /* border: 1px solid black; */
+  box-shadow: 0px 0px 10px 0px #d9e3e7;
+  width:30%;
+  margin: 50px auto;
+  height: 400px;
+  background-color:#eaf6fb ;
+}
+

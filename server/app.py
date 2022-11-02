@@ -2,6 +2,10 @@ import os
 from flask import Flask, request, jsonify, send_from_directory
 import connectmongo
 from bson.json_util import dumps
+import face_capture
+import face_detector
+import liveness_detector
+import json
 mongoDb = connectmongo
 app = Flask(__name__, static_folder='./build', static_url_path='/')
 # app = Flask(__name__, static_folder='../client/build', static_url_path='/')
@@ -11,9 +15,23 @@ app = Flask(__name__, static_folder='./build', static_url_path='/')
 @app.route('/login/<id>', methods=["GET"])
 # @cross_origin()
 def login(id):
-    cursor = mongoDb.getData(id)
-    json_data = dumps(cursor, indent=2)
-    return json_data
+
+    isReal = liveness_detector.liveness()
+    if isReal=='real':
+        cursor = mongoDb.getData(id)
+        json_data = dumps(cursor, indent=2)
+
+        users = json.loads(json_data)
+        for user in users:
+            username = user['Name']
+        detectedname = face_detector.detectFace(username)
+        if detectedname:
+            return json_data
+        else:
+            return "null"
+    else:
+        print('unreal')
+
 
 
 @app.route('/createaccount', methods=["POST"])
@@ -29,6 +47,8 @@ def createAccount():
         "Beneficiary": {}
     }
     mongoDb.postData(data)
+    face_capture.getFace(data['Name'])
+    face_capture.trainFace()
     return jsonify(response_value=request.json)
 
 
