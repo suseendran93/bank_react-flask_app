@@ -1,16 +1,16 @@
 # bank_react-flask_app
-A simple banking application
+# A simple banking application
 
-Clone the repo
+Step 1: Clone the repo
 
-cd client
+Step 2: cd client
 
-npm install
+Step 3: npm install
 
-npm start
+Step 4: npm start
 
-cd ../server
+Step 5: cd ../server
 
-pip install -r requirements.txt
+step 6: pip install -r requirements.txt
 
-run app.py
+step 7: run app.py
